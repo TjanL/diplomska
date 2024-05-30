@@ -7,7 +7,7 @@ interface DeploymentState {
 }
 
 const api = new DefaultApi(new Configuration({
-    basePath: "http://localhost:8000"
+    basePath: import.meta.env.API_HOST || "http://localhost:8000"
 }))
 
 const useDeploymentStore = create<DeploymentState>(set => ({
