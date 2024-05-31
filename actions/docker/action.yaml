@@ -1,0 +1,39 @@
+name: 'Deploy docker image over ssh'
+description: 'Deploys any docker image to remote host over ssh'
+inputs:
+  image:
+    description: 'Docker image'
+    required: true
+  container_name:
+    description: 'Name for the created container'
+    default: '${{ github.repository_id }}'
+  docker_ports:
+    description: 'Ports for the created container'
+    default: ''
+  docker_volumes:
+    description: 'Volumes for the created container'
+    default: ''
+  docker_env:
+    description: 'Env for the created container'
+    default: ''
+  ssh_user:
+    description: 'SSH username'
+    required: true
+  ssh_host:
+    description: 'SSH hostname'
+    required: true
+  ssh_private_key:
+    description: 'SSH private key for the user'
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    CONTAINER_IMAGE: '${{ inputs.image }}'
+    CONTAINER_NAME: '${{ inputs.container_name }}'
+    DOCKER_PORTS: '${{ inputs.docker_ports }}'
+    DOCKER_VOLUMES: '${{ inputs.docker_volumes }}'
+    DOCKER_ENV: '${{ inputs.docker_env }}'
+    SSH_USER: '${{ inputs.ssh_user }}'
+    SSH_HOST: '${{ inputs.ssh_host }}'
+    SSH_PRIVATE_KEY: '${{ inputs.ssh_private_key }}'
