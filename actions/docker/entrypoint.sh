@@ -4,10 +4,7 @@ set -e
 mkdir -p ~/.ssh
 echo "$INPUT_SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
 chmod 600 ~/.ssh/id_rsa
-ssh-keyscan $INPUT_SSH_HOST > ~/.ssh/config
-chmod 400 ~/.ssh/config
-
-cat ~/.ssh/config
+ssh-keyscan $INPUT_SSH_HOST > ~/.ssh/known_hosts
 
 docker context create prod --docker host="ssh://$INPUT_SSH_USER@$INPUT_SSH_HOST"
 docker context use prod
