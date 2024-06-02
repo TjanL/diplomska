@@ -28,12 +28,3 @@ inputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  env:
-    CONTAINER_IMAGE: '${{ inputs.image }}'
-    CONTAINER_NAME: '${{ inputs.container_name }}'
-    DOCKER_PORTS: '${{ inputs.docker_ports }}'
-    DOCKER_VOLUMES: '${{ inputs.docker_volumes }}'
-    DOCKER_ENV: '${{ inputs.docker_env }}'
-    SSH_USER: '${{ inputs.ssh_user }}'
-    SSH_HOST: '${{ inputs.ssh_host }}'
-    SSH_PRIVATE_KEY: '${{ inputs.ssh_private_key }}'
