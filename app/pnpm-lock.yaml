@@ -14,9 +14,6 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
-      wretch:
-        specifier: ^2.8.1
-        version: 2.8.1
       zustand:
         specifier: ^4.5.2
         version: 4.5.2(@types/react@18.3.3)(react@18.3.1)
@@ -1738,10 +1735,6 @@ packages:
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
-  wretch@2.8.1:
-    resolution: {integrity: sha512-as9Mta8Nrnu6mL9ApNvmKGWqZtvoQtOILEfjox1BYYBYyUSKUdATVEAlQIMGLSZyzRfNbpUvPKDcGJTGA1b5LA==}
-    engines: {node: '>=14'}
-
   y18n@5.0.8:
     resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}
     engines: {node: '>=10'}
@@ -3421,8 +3414,6 @@ snapshots:
       strip-ansi: 7.1.0
 
   wrappy@1.0.2: {}
-
-  wretch@2.8.1: {}
 
   y18n@5.0.8: {}
 

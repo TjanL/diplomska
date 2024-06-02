@@ -13,7 +13,6 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "wretch": "^2.8.1",
     "zustand": "^4.5.2"
   },
   "devDependencies": {

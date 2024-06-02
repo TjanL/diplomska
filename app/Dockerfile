@@ -8,7 +8,7 @@ RUN corepack enable
 WORKDIR /app
 
 COPY . .
-RUN pnpm install --prod --frozen-lockfile
+RUN pnpm install
 RUN pnpm build
 
 FROM nginx:stable
