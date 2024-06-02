@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 mkdir -p ~/.ssh
 echo "$INPUT_SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
