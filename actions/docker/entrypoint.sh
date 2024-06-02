@@ -4,6 +4,7 @@ set -e
 if [ -z "$INPUT_DNS_SERVERS" ]; then
     echo -e $INPUT_DNS_SERVERS >> /etc/resolv.conf
 fi
+dig  node
 
 mkdir -p ~/.ssh
 echo "$INPUT_SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
