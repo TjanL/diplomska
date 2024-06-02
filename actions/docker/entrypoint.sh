@@ -1,7 +1,7 @@
 #!/bin/sh -l
 
 mkdir -p ~/.ssh
-echo "${{ SSH_PRIVATE_KEY }}" >> ~/.ssh/id_rsa
+echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_rsa
 chmod 600 ~/.ssh/id_rsa
 
 docker context create prod --docker host="ssh://$SSH_USER@$SSH_HOST"
