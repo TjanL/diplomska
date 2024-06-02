@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-if [ -z "$INPUT_DNS_SERVERS" ]; then
+if ! [ -z "$INPUT_DNS_SERVERS" ]; then
     echo -e $INPUT_DNS_SERVERS >> /etc/resolv.conf
     cat /etc/resolv.conf
 fi
