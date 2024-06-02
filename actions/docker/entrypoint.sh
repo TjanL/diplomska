@@ -1,8 +1,11 @@
 #!/bin/bash
 set -e
 
-eval $(ssh-agent -s)
-ssh-add <(echo "$INPUT_SSH_PRIVATE_KEY")
+mkdir -p ~/.ssh
+touch ~/.ssh/known_hosts
+echo "$INPUT_SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+chmod 0400 ~/.ssh/id_rsa
+ssh-keyscan -t rsa $INPUT_SSH_HOST >> ~/.ssh/known_hosts
 
 docker context create prod --docker host="ssh://$INPUT_SSH_USER@$INPUT_SSH_HOST"
 docker context use prod
