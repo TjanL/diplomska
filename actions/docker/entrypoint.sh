@@ -3,7 +3,9 @@ set -e
 
 if [ -z "$INPUT_DNS_SERVERS" ]; then
     echo -e $INPUT_DNS_SERVERS >> /etc/resolv.conf
+    cat /etc/resolv.conf
 fi
+cat /etc/resolv.conf
 dig  node
 
 mkdir -p ~/.ssh
