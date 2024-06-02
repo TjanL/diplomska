@@ -1,4 +1,4 @@
-#!/bin/sh -l
+#!/bin/bash
 set -e
 
 mkdir -p ~/.ssh
@@ -10,4 +10,4 @@ docker context create prod --docker host="ssh://$INPUT_SSH_USER@$INPUT_SSH_HOST"
 docker context use prod
 
 docker stop $(docker ps --filter name=$INPUT_CONTAINER_NAME -q)
-docker run $INPUT_DOCKER_VOLUMES $INPUT_DOCKER_PORTS $INPUT_DOCKER_ENV --detached --rm --name $INPUT_CONTAINER_NAME $INPUT_CONTAINER_IMAGE
+docker run $INPUT_DOCKER_VOLUMES $INPUT_DOCKER_PORTS $INPUT_DOCKER_ENV --detached --rm --name $INPUT_CONTAINER_NAME $INPUT_IMAGE
