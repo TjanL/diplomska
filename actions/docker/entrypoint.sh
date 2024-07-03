@@ -12,5 +12,9 @@ echo "StrictHostKeyChecking no" >> $(find /etc -iname ssh_config)
 docker context create prod --docker host="ssh://$INPUT_SSH_USER@$INPUT_SSH_HOST"
 docker context use prod
 
-docker stop $(docker ps --filter name=$INPUT_CONTAINER_NAME -q)
+running_containers=$(docker ps --filter name=$INPUT_CONTAINER_NAME -q)
+if [[ $running_containers ]]; then
+    docker stop $running_containers
+fi
+
 docker run $INPUT_DOCKER_VOLUMES $INPUT_DOCKER_PORTS $INPUT_DOCKER_ENV -d --rm --name $INPUT_CONTAINER_NAME $INPUT_IMAGE
