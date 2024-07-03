@@ -8,7 +8,7 @@ function App() {
       <div className="text-center">
         <div className="font-semibold text-xl">App has been deployed</div>
         <div className="font-bold font-mono text-9xl">{count}<span className="text-6xl">x</span></div>
-        <div className="text-neutral-400 text-xs">{import.meta.env.COMMIT}</div>
+        <div className="text-neutral-400 text-xs">{import.meta.env.VITE_COMMIT}</div>
       </div>
     </div>
   )

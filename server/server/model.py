@@ -8,10 +8,9 @@ class Counter(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     count: int
 
-print(os.environ.get("DATABASE_HOST", "sqlite:///database.db"))
-connect_args = {"check_same_thread": False}
+
 engine = create_engine(
-    os.environ.get("DATABASE_HOST", "sqlite:///database.db"), connect_args=connect_args
+    os.environ.get("DATABASE_HOST", "sqlite:///database.db")
 )
 
 

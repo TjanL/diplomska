@@ -1,6 +1,6 @@
-FROM python:3.11-alpine as base
+FROM python:3.11-alpine AS base
 
-FROM base as builder
+FROM base AS builder
 
 ENV POETRY_NO_INTERACTION=1
 RUN pip install poetry
@@ -10,7 +10,7 @@ WORKDIR /app
 COPY . .
 RUN poetry build --format wheel
 
-FROM base as runtime
+FROM base AS runtime
 
 COPY --from=builder /app/dist/*.whl .
 RUN pip install --no-cache-dir *.whl

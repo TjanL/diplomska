@@ -1,0 +1,32 @@
+name: 'Deploy to Remote Docker Host'
+description: 'Deploy a Docker container to a remote Docker host using SSH context'
+
+inputs:
+  ssh_key:
+    description: 'SSH private key for accessing the remote Docker host'
+    required: true
+  remote_docker_host:
+    description: 'Remote Docker host in the format username@host'
+    required: true
+  docker_image:
+    description: 'Docker image to deploy'
+    required: true
+  container_name:
+    description: 'Name of the container to run on the remote Docker host'
+    required: true
+  env_vars:
+    description: 'Comma-separated list of environment variables (e.g., "KEY1=value1,KEY2=value2")'
+    required: false
+  port:
+    description: 'Port mapping for the container (e.g., "80:8080")'
+    required: false
+  volumes:
+    description: 'Comma-separated list of volumes (e.g., "/host/path:/container/path,/another/host/path:/another/container/path")'
+    required: false
+  network:
+    description: 'Network mode or custom network name for the container'
+    required: false
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'

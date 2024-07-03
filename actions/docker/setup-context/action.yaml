@@ -1,0 +1,18 @@
+name: 'Setup docker context over ssh'
+description: 'Setup docker context over ssh'
+inputs:
+  context:
+    description: 'Context name'
+    required: true
+  ssh_user:
+    description: 'SSH username'
+    required: true
+  ssh_host:
+    description: 'SSH hostname'
+    required: true
+  ssh_private_key:
+    description: 'SSH private key for the user'
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
