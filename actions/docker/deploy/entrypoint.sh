@@ -23,8 +23,10 @@ fi
 
 # Prepare port options
 port_option=""
-if [ -n "$INPUT_PORT" ]; then
-  port_option="-p $INPUT_PORT"
+if [ -n "$INPUT_PORTS" ]; then
+  for portPair in $(echo "$INPUT_PORTS" | tr ',' '\n'); do
+    port_option="-p $portPair"
+  done
 fi
 
 # Prepare volume options
