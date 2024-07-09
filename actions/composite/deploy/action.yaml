@@ -1,0 +1,104 @@
+name: 'Deploy to Remote Docker Host'
+description: 'Deploy a Docker container to a remote Docker host using SSH context'
+
+inputs:
+  ssh_key:
+    description: 'SSH private key for accessing the remote Docker host'
+    required: true
+  remote_docker_host:
+    description: 'Remote Docker host in the format username@host'
+    required: true
+  docker_image:
+    description: 'Docker image to deploy'
+    required: true
+  container_name:
+    description: 'Name of the container to run on the remote Docker host'
+    required: true
+  env_vars:
+    description: 'Comma-separated list of environment variables (e.g. "KEY1=value1,KEY2=value2")'
+    required: false
+  ports:
+    description: 'Comma-separated list of port mappings (e.g. "80:8080,443:8443")'
+    required: false
+  volumes:
+    description: 'Comma-separated list of volumes (e.g. "/host/path:/container/path,/another/host/path:/another/container/path")'
+    required: false
+  network:
+    description: 'Network mode or custom network name for the container'
+    required: false
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Start ssh-agent and add SSH key
+      uses: webfactory/ssh-agent@v0.9.0
+      with:
+        ssh-private-key: ${{ inputs.ssh_key }}
+
+    - name: Create SSH config file
+      shell: bash
+      run: |
+        mkdir -p ~/.ssh
+        remote_host="${{ inputs.remote_docker_host }}"
+        host=$(echo "$remote_host" | cut -d'@' -f2)
+        echo "Host $host" >> ~/.ssh/config
+        echo "    StrictHostKeyChecking no" >> ~/.ssh/config
+        echo "    UserKnownHostsFile=/dev/null" >> ~/.ssh/config
+
+    - name: Create Docker context if not exists
+      shell: bash
+      run: |
+        if ! docker context inspect remote-docker; then
+          docker context create remote-docker --docker "host=ssh://${{ inputs.remote_docker_host }}"
+        fi
+
+    - name: Use Docker context
+      shell: bash
+      run: docker context use remote-docker
+
+    - name: Pull Docker image
+      shell: bash
+      run: docker pull ${{ inputs.docker_image }}
+
+    - name: Stop existing container
+      shell: bash
+      run: docker stop ${{ inputs.container_name }} || true
+
+    - name: Remove existing container
+      shell: bash
+      run: docker rm ${{ inputs.container_name }} || true
+
+    - name: Deploy Docker container
+      shell: bash
+      run: |
+        env_vars_option=""
+        if [ -n "${{ inputs.env_vars }}" ]; then
+          for var in $(echo "${{ inputs.env_vars }}" | tr ',' '\n'); do
+            env_vars_option="$env_vars_option -e $var"
+          done
+        fi
+
+        port_options="-p 80:8080"
+        if [ -n "${{ inputs.ports }}" ]; then
+          port_options=""
+          for port in $(echo "${{ inputs.ports }}" | tr ',' '\n'); do
+            port_options="$port_options -p $port"
+          done
+        fi
+
+        volume_options=""
+        if [ -n "${{ inputs.volumes }}" ]; then
+          for volume in $(echo "${{ inputs.volumes }}" | tr ',' '\n'); do
+            volume_options="$volume_options -v $volume"
+          done
+        fi
+
+        network_option=""
+        if [ -n "${{ inputs.network }}" ]; then
+          if ! docker network inspect ${{ inputs.network }}; then
+            docker network create ${{ inputs.network }}
+          fi
+          network_option="--network ${{ inputs.network }}"
+        fi
+
+        docker run -d --name ${{ inputs.container_name }} $env_vars_option $port_options $volume_options $network_option ${{ inputs.docker_image }}

@@ -13,14 +13,42 @@ locals {
     "monorepo-trunk-docker",
     "per-component-app-feature-docker",
     "per-component-app-trunk-docker",
-    "per-component-server-feature-dockerr",
+    "per-component-server-feature-docker",
     "per-component-server-trunk-docker",
+    "monorepo-feature-js",
+    "monorepo-trunk-js",
+    "per-component-app-feature-js",
+    "per-component-app-trunk-js",
+    "per-component-server-feature-js",
+    "per-component-server-trunk-js",
+    "monorepo-feature-composite",
+    "monorepo-trunk-composite",
+    "per-component-app-feature-composite",
+    "per-component-app-trunk-composite",
+    "per-component-server-feature-composite",
+    "per-component-server-trunk-composite",
   ]
 }
 
-variable "ts_oauth_client_id" {}
-variable "ts_oauth_secret" {}
-variable "ssh_private_key" {}
+variable "ts_oauth_client_id" {
+  type      = string
+  sensitive = true
+}
+variable "ts_oauth_secret" {
+  type      = string
+  sensitive = true
+}
+variable "ts_node_ip" {
+  type = string
+}
+variable "ssh_private_key" {
+  type      = string
+  sensitive = true
+}
+variable "github_registry_pat" {
+  type      = string
+  sensitive = true
+}
 
 resource "github_repository" "repositories" {
   for_each = toset(local.workflows)
@@ -46,12 +74,28 @@ resource "github_actions_secret" "tailscale_oauth" {
   plaintext_value = var.ts_oauth_secret
 }
 
+resource "github_actions_secret" "tailscale_node_ip" {
+  for_each = github_repository.repositories
+
+  repository      = each.value.name
+  secret_name     = "TS_NODE_IP"
+  plaintext_value = var.ts_node_ip
+}
+
 resource "github_actions_secret" "ssh_private_key" {
   for_each = github_repository.repositories
 
   repository      = each.value.name
   secret_name     = "SSH_PRIVATE_KEY"
-  plaintext_value = var.ssh_private_key
+  plaintext_value = file(var.ssh_private_key)
+}
+
+resource "github_actions_secret" "github_registry_pat" {
+  for_each = github_repository.repositories
+
+  repository      = each.value.name
+  secret_name     = "GHRC_TOKEN"
+  plaintext_value = var.github_registry_pat
 }
 
 resource "null_resource" "clone" {

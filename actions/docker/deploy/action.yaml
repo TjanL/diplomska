@@ -15,16 +15,25 @@ inputs:
     description: 'Name of the container to run on the remote Docker host'
     required: true
   env_vars:
-    description: 'Comma-separated list of environment variables (e.g., "KEY1=value1,KEY2=value2")'
+    description: 'Comma-separated list of environment variables (e.g. "KEY1=value1,KEY2=value2")'
     required: false
   ports:
-    description: 'Comma-separated list of port mappings (e.g., "80:8080,443:8443")'
+    description: 'Comma-separated list of port mappings (e.g. "80:8080,443:8443")'
     required: false
   volumes:
-    description: 'Comma-separated list of volumes (e.g., "/host/path:/container/path,/another/host/path:/another/container/path")'
+    description: 'Comma-separated list of volumes (e.g. "/host/path:/container/path,/another/host/path:/another/container/path")'
     required: false
   network:
     description: 'Network mode or custom network name for the container'
+    required: false
+  docker_registry:
+    description: 'Docker registry to log in to'
+    required: false
+  docker_username:
+    description: 'Username for Docker registry'
+    required: false
+  docker_password:
+    description: 'Password for Docker registry'
     required: false
 
 runs:

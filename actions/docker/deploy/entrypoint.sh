@@ -13,6 +13,11 @@ echo "StrictHostKeyChecking no" >> $(find /etc -iname ssh_config)
 docker context create remote-docker --docker "host=ssh://$INPUT_REMOTE_DOCKER_HOST"
 docker context use remote-docker
 
+# Optionally log in to Docker registry
+if [ -n "$INPUT_DOCKER_REGISTRY" ] && [ -n "$INPUT_DOCKER_USERNAME" ] && [ -n "$INPUT_DOCKER_PASSWORD" ]; then
+  echo "$INPUT_DOCKER_PASSWORD" | docker login "$INPUT_DOCKER_REGISTRY" -u "$INPUT_DOCKER_USERNAME" --password-stdin
+fi
+
 # Prepare environment variable options
 env_vars=""
 if [ -n "$INPUT_ENV_VARS" ]; then
@@ -25,7 +30,7 @@ fi
 port_option=""
 if [ -n "$INPUT_PORTS" ]; then
   for portPair in $(echo "$INPUT_PORTS" | tr ',' '\n'); do
-    port_option="-p $portPair"
+    port_option="$port_option -p $portPair"
   done
 fi
 
